@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\PengaduanController;
+use App\Http\Controllers\Api\MenuKantinController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -13,6 +14,12 @@ Route::get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/admin/tambah-penghuni', [AdminController::class, 'tambahPenghuni']);
+
+// Route Kantin
+Route::get('/menu-kantin', [MenuKantinController::class, 'index']);
+Route::post('/menu-kantin', [MenuKantinController::class, 'store']);
+Route::post('/menu-kantin/{id}', [MenuKantinController::class, 'update']);
+Route::delete('/menu-kantin/{id}', [MenuKantinController::class, 'destroy']);
 
 Route::get('/admin/penghuni', [AdminController::class, 'getPenghuni']);
 
