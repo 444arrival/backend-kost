@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\Api\MenuKantinController;
+use App\Http\Controllers\PesananKantinController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -15,11 +16,15 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/admin/tambah-penghuni', [AdminController::class, 'tambahPenghuni']);
 
-// Route Kantin
+// Route Kantin (Menu)
 Route::get('/menu-kantin', [MenuKantinController::class, 'index']);
 Route::post('/menu-kantin', [MenuKantinController::class, 'store']);
 Route::post('/menu-kantin/{id}', [MenuKantinController::class, 'update']);
 Route::delete('/menu-kantin/{id}', [MenuKantinController::class, 'destroy']);
+
+// Route Pesanan Kantin (Penghuni & Admin)
+Route::get('/pesanan-kantin', [PesananKantinController::class, 'index']);
+Route::post('/pesanan-kantin', [PesananKantinController::class, 'store']);
 
 Route::get('/admin/penghuni', [AdminController::class, 'getPenghuni']);
 
