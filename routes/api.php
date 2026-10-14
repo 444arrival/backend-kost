@@ -16,15 +16,18 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/admin/tambah-penghuni', [AdminController::class, 'tambahPenghuni']);
 
-// Route Kantin (Menu)
+
 Route::get('/menu-kantin', [MenuKantinController::class, 'index']);
 Route::post('/menu-kantin', [MenuKantinController::class, 'store']);
 Route::post('/menu-kantin/{id}', [MenuKantinController::class, 'update']);
 Route::delete('/menu-kantin/{id}', [MenuKantinController::class, 'destroy']);
 
-// Route Pesanan Kantin (Penghuni & Admin)
 Route::get('/pesanan-kantin', [PesananKantinController::class, 'index']);
 Route::post('/pesanan-kantin', [PesananKantinController::class, 'store']);
+Route::post('/pesanan-kantin/checkout', [PesananKantinController::class, 'checkout']);
+
+
+Route::put('/pesanan-kantin/{id}/status', [PesananKantinController::class, 'updateStatus']);
 
 Route::get('/admin/penghuni', [AdminController::class, 'getPenghuni']);
 
