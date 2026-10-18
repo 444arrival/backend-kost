@@ -11,7 +11,6 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-
         $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -27,7 +26,6 @@ class AuthController extends Controller
             ], 401);
         }
 
-
         if ($user->role !== $request->role) {
             return response()->json([
                 'status'  => false,
@@ -35,9 +33,13 @@ class AuthController extends Controller
             ], 403);
         }
 
+        // Generate token Sanctum untuk user yang login
+        $token = $user->createToken('auth_token')->plainTextToken;
+
         return response()->json([
             'status'  => true,
             'message' => 'Login Berhasil',
+            'token'   => $token, // Kirim token ke Android
             'data'    => [
                 'id'          => $user->id,
                 'name'        => $user->name,

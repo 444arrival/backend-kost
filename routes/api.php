@@ -34,4 +34,7 @@ Route::get('/admin/penghuni', [AdminController::class, 'getPenghuni']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/pengaduans', [PengaduanController::class, 'index']);
     Route::post('/pengaduans', [PengaduanController::class, 'store']);
+    
+    // Tambahkan baris ini
+    Route::get('/admin/pengaduan', [PengaduanController::class, 'index']); 
 });
