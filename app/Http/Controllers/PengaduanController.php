@@ -9,15 +9,12 @@ class PengaduanController extends Controller
 {
     public function index(Request $request)
     {
-        // Jika user yang login adalah admin, tampilkan semua pengaduan beserta data user/pelapornya
         if ($request->user() && $request->user()->role === 'admin') {
             $pengaduans = Pengaduan::with('user')->latest()->get();
         } else {
-            // Jika penghuni biasa, tampilkan pengaduan miliknya sendiri
             $pengaduans = Pengaduan::where('user_id', $request->user()->id)->latest()->get();
         }
 
-        // Kembalikan LANGSUNG berupa Array/List JSON (tanpa dibungkus 'success' / 'data')
         return response()->json($pengaduans);
     }
 
@@ -34,7 +31,7 @@ class PengaduanController extends Controller
             'kategori' => $request->kategori,
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
-            'status' => 'Menunggu', // Status awal
+            'status' => 'Menunggu',
         ]);
 
         return response()->json([
@@ -42,5 +39,26 @@ class PengaduanController extends Controller
             'message' => 'Pengaduan berhasil dikirim',
             'data' => $pengaduan
         ], 201);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|string',
+        ]);
+
+        $pengaduan = Pengaduan::find($id);
+
+        if (!$pengaduan) {
+            return response()->json(['message' => 'Pengaduan tidak ditemukan'], 404);
+        }
+
+        $pengaduan->status = $request->status;
+        $pengaduan->save();
+
+        return response()->json([
+            'message' => 'Status pengaduan berhasil diperbarui',
+            'data' => $pengaduan
+        ]);
     }
 }

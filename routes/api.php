@@ -13,9 +13,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/login', [AuthController::class, 'login']);
-
 Route::post('/admin/tambah-penghuni', [AdminController::class, 'tambahPenghuni']);
-
 
 Route::get('/menu-kantin', [MenuKantinController::class, 'index']);
 Route::post('/menu-kantin', [MenuKantinController::class, 'store']);
@@ -25,8 +23,6 @@ Route::delete('/menu-kantin/{id}', [MenuKantinController::class, 'destroy']);
 Route::get('/pesanan-kantin', [PesananKantinController::class, 'index']);
 Route::post('/pesanan-kantin', [PesananKantinController::class, 'store']);
 Route::post('/pesanan-kantin/checkout', [PesananKantinController::class, 'checkout']);
-
-
 Route::put('/pesanan-kantin/{id}/status', [PesananKantinController::class, 'updateStatus']);
 
 Route::get('/admin/penghuni', [AdminController::class, 'getPenghuni']);
@@ -35,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/pengaduans', [PengaduanController::class, 'index']);
     Route::post('/pengaduans', [PengaduanController::class, 'store']);
     
-    // Tambahkan baris ini
+    // Endpoint Get & Update Status Pengaduan
     Route::get('/admin/pengaduan', [PengaduanController::class, 'index']); 
+    Route::put('/admin/pengaduan/{id}/status', [PengaduanController::class, 'updateStatus']);
 });
