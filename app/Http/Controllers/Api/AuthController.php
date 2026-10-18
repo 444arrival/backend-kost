@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -44,7 +45,8 @@ class AuthController extends Controller
                 'name'        => $user->name,
                 'username'    => $user->username,
                 'nomor_kamar' => $user->nomor_kamar,
-                'role'        => $user->role
+                'role'        => $user->role,
+                'foto'        => $user->foto ? asset('storage/' . $user->foto) : null
             ]
         ], 200);
     }
@@ -57,8 +59,8 @@ class AuthController extends Controller
 
         $user = $request->user();
 
-        if ($user->foto && \Illuminate\Support\Facades\Storage::exists('public/' . $user->foto)) {
-            \Illuminate\Support\Facades\Storage::delete('public/' . $user->foto);
+        if ($user->foto && Storage::disk('public')->exists($user->foto)) {
+            Storage::disk('public')->delete($user->foto);
         }
 
         $path = $request->file('foto')->store('profil', 'public');

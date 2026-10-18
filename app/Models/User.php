@@ -6,15 +6,13 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens; // <--- 1. IMPORT TRAIT SANCTUM
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable; // <--- 2. TAMBAHKAN HasApiTokens DI SINI
+    use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * Kolom yang boleh diisi secara massal (Mass Assignment)
-     */
     protected $fillable = [
         'name',
         'username',
@@ -22,26 +20,28 @@ class User extends Authenticatable
         'no_hp',
         'nomor_kamar',
         'role',
+        'foto',
     ];
 
-    /**
-     * Kolom yang disembunyikan saat data diubah ke JSON (API)
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected function fotoUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => isset($attributes['foto']) && $attributes['foto'] 
+                ? asset('storage/' . $attributes['foto']) 
+                : null
+        );
     }
 }

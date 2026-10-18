@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('nomor_kamar');
             $table->decimal('total_harga', 10, 2);
             $table->text('catatan')->nullable();
-            $table->string('status')->default('Diproses'); // Status: Diproses, Diantar, Selesai
+            $table->string('status')->default('Diproses');
             $table->timestamps();
         });
     }
