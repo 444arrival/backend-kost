@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('no_hp')->nullable();
             $table->string('nomor_kamar')->nullable();
             $table->enum('role', ['admin', 'penghuni'])->default('penghuni');
+            $table->string('foto')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -33,13 +33,12 @@ class AuthController extends Controller
             ], 403);
         }
 
-        // Generate token Sanctum untuk user yang login
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'status'  => true,
             'message' => 'Login Berhasil',
-            'token'   => $token, // Kirim token ke Android
+            'token'   => $token,
             'data'    => [
                 'id'          => $user->id,
                 'name'        => $user->name,
@@ -47,6 +46,31 @@ class AuthController extends Controller
                 'nomor_kamar' => $user->nomor_kamar,
                 'role'        => $user->role
             ]
+        ], 200);
+    }
+
+    public function updateFoto(Request $request)
+    {
+        $request->validate([
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $user = $request->user();
+
+        if ($user->foto && \Illuminate\Support\Facades\Storage::exists('public/' . $user->foto)) {
+            \Illuminate\Support\Facades\Storage::delete('public/' . $user->foto);
+        }
+
+        $path = $request->file('foto')->store('profil', 'public');
+
+        $user->update([
+            'foto' => $path
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Foto profil berhasil diperbarui',
+            'foto_url' => asset('storage/' . $path)
         ], 200);
     }
 }

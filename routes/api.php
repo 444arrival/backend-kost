@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\PengaduanController;
-use App\Http\Controllers\PengumumanController; // Tambahkan controller pengumuman
+use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\Api\MenuKantinController;
 use App\Http\Controllers\PesananKantinController;
 
@@ -29,14 +29,15 @@ Route::put('/pesanan-kantin/{id}/status', [PesananKantinController::class, 'upda
 Route::get('/admin/penghuni', [AdminController::class, 'getPenghuni']);
 
 Route::middleware('auth:sanctum')->group(function () {
+
     Route::get('/pengaduans', [PengaduanController::class, 'index']);
     Route::post('/pengaduans', [PengaduanController::class, 'store']);
     
-    // Endpoint Pengaduan Admin
     Route::get('/admin/pengaduan', [PengaduanController::class, 'index']); 
     Route::put('/admin/pengaduan/{id}/status', [PengaduanController::class, 'updateStatus']);
 
-    // Endpoint Pengumuman (Admin & User bisa akses GET, Admin buat POST)
-   Route::get('/pengumuman', [PengumumanController::class, 'index']);
+    Route::get('/pengumuman', [PengumumanController::class, 'index']);
     Route::post('/admin/pengumuman', [PengumumanController::class, 'store']);
+
+    Route::post('/user/foto', [AuthController::class, 'updateFoto']);
 });
