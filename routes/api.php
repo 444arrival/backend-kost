@@ -8,6 +8,7 @@ use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\Api\MenuKantinController;
 use App\Http\Controllers\PesananKantinController;
+use App\Http\Controllers\PeraturanKosController;
 
 Route::get('/user', function (Request $request) {
     $user = $request->user();
@@ -40,6 +41,13 @@ Route::post('/pesanan-kantin', [PesananKantinController::class, 'store']);
 Route::post('/pesanan-kantin/checkout', [PesananKantinController::class, 'checkout']);
 Route::put('/pesanan-kantin/{id}/status', [PesananKantinController::class, 'updateStatus']);
 
+Route::get('/peraturan-kos', [PeraturanKosController::class, 'index']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/admin/peraturan-kos', [PeraturanKosController::class, 'store']);
+    Route::put('/admin/peraturan-kos/{id}', [PeraturanKosController::class, 'update']);       // <-- Ditambahkan
+    Route::delete('/admin/peraturan-kos/{id}', [PeraturanKosController::class, 'destroy']); // <-- Ditambahkan
+});
 
 Route::get('/admin/penghuni', [AdminController::class, 'getPenghuni']);
 
@@ -55,4 +63,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/pengumuman', [PengumumanController::class, 'store']);
 
     Route::post('/user/foto', [AuthController::class, 'updateFoto']);
+    
 });
