@@ -9,6 +9,7 @@ use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\Api\MenuKantinController;
 use App\Http\Controllers\PesananKantinController;
 use App\Http\Controllers\PeraturanKosController;
+use App\Http\Controllers\PembayaranController;
 
 Route::get('/user', function (Request $request) {
     $user = $request->user();
@@ -65,3 +66,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/foto', [AuthController::class, 'updateFoto']);
     
 });
+
+// ===== Pembayaran sewa (Midtrans) =====
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/tagihan-aktif', [PembayaranController::class, 'tagihanAktif']);
+    Route::get('/riwayat-pembayaran', [PembayaranController::class, 'riwayat']);
+    Route::post('/pembayaran/snap', [PembayaranController::class, 'snap']);
+});
+
+// Webhook Midtrans, TANPA auth (diverifikasi lewat signature di controller)
+Route::post('/pembayaran/notifikasi', [PembayaranController::class, 'notifikasi']);
+
+// Halaman tujuan setelah pembayaran (ditangkap WebView di aplikasi)
+Route::get('/payment/finish', fn () => 'Pembayaran diproses...');
+
+Route::get('/pengumuman', [PengumumanController::class, 'index']);
+    Route::post('/admin/pengumuman', [PengumumanController::class, 'store']);
+    Route::put('/admin/pengumuman/{id}', [PengumumanController::class, 'update']);
+    Route::delete('/admin/pengumuman/{id}', [PengumumanController::class, 'destroy']);
