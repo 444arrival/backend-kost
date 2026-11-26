@@ -15,7 +15,6 @@ class AuthController extends Controller
         $request->validate([
             'username' => 'required',
             'password' => 'required',
-            'role'     => 'required|in:admin,penghuni'
         ]);
 
         $user = User::where('username', $request->username)->first();
@@ -25,13 +24,6 @@ class AuthController extends Controller
                 'status'  => false,
                 'message' => 'Username atau Password salah!'
             ], 401);
-        }
-
-        if ($user->role !== $request->role) {
-            return response()->json([
-                'status'  => false,
-                'message' => 'Akun ini tidak terdaftar sebagai ' . ucfirst($request->role)
-            ], 403);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;

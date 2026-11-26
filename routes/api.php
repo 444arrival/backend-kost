@@ -46,8 +46,8 @@ Route::get('/peraturan-kos', [PeraturanKosController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/peraturan-kos', [PeraturanKosController::class, 'store']);
-    Route::put('/admin/peraturan-kos/{id}', [PeraturanKosController::class, 'update']);       // <-- Ditambahkan
-    Route::delete('/admin/peraturan-kos/{id}', [PeraturanKosController::class, 'destroy']); // <-- Ditambahkan
+    Route::put('/admin/peraturan-kos/{id}', [PeraturanKosController::class, 'update']); 
+    Route::delete('/admin/peraturan-kos/{id}', [PeraturanKosController::class, 'destroy']); 
 });
 
 Route::get('/admin/penghuni', [AdminController::class, 'getPenghuni']);
